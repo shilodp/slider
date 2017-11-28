@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="jquery.js"></script>
+    <script src="angular.js"></script>
+    <script src="angular-animate.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+<div ng-app="Dating" ng-controller="Slider" id="body">
+    <div class="left">
+        <div class="logo">
+            Логотип
+        </div>
+        <div class="navigation">
+            Навигация
+        </div>
+        <div class="top-users">
+            Хочу сюда
+        </div>
+    </div>
+    <div class="center">
+        <div class="main-content">
+            <div class="head">
+                <div class="like-unlike">
+                    <svg id="like" class="like" width="70" height="70" ng-click="likeIt()">
+                        <circle cx="35" cy="35" r="30" stroke="red" fill="white"></circle>
+                        <path d="M25,38 L35,46 L45,38 A5,5 180 1,0 35,28 A5,5 180 1,0 25,38" stroke="red" fill="none"></path>
+                    </svg>
+                    <svg id="unlike" class="unlike" width="70" height="70" ng-click="unlikeIt()">
+                        <circle cx="35" cy="35" r="30" stroke="purple" fill="white"></circle>
+                        <path d="M25,45 L45,25 M25,25 L45,45" stroke="purple" fill="none"></path>
+                    </svg>
+                </div>
+                <div class="name-age">
+                    <h2>
+                        <svg width="20" height="18">
+                            <circle cx="10" cy="10" r="4" stroke-width="0" fill={{status}}></circle>
+                        </svg>
+                        {{name}}{{age}}
+                        <svg width="26" height="22" ng-switch='statusshow'>
+                            <circle  cx="15" cy="11" r="10" stroke="blue" fill="none" ng-switch-when="0"></circle>
+                            <rect x="11" y="5" height="12" width="8" rx="3" fill="blue" ng-switch-when="0"></rect>
+                            <rect x="12" y="6" height="8" width="6" rx="1" fill="white" ng-switch-when="0"></rect>
+                            <circle  cx="15" cy="11" r="10" stroke="blue" fill="none" ng-switch-when="1"></circle>
+                            <rect x="9" y="5" height="10" width="12" rx="2" fill="blue" ng-switch-when="1"></rect>
+                            <rect x="10" y="6" height="8" width="10" rx="1" fill="white" ng-switch-when="1"></rect>
+                            <rect x="13" y="15" height="2" width="4" fill="blue" ng-switch-when="1"></rect>
+                            <line x1="11" y1="17" x2="19" y2="17" stroke="blue" ng-switch-when="1"></line>
+                        </svg>
+                    </h2>
+                    <p class="head-education">{{headEducation}}</p>
+                </div>
+                <div class="profile-buttons">
+                    <svg class="superLike" width="50" height="50" ng-click="superLike()">
+                        <circle cx="25" cy="25" r="22" stroke="red" fill="white"></circle>
+                        <path d="M17,28 L25,35 L33,28 A4,4 180 1,0 25,20 A4,4 180 1,0 17,28 M15,17 Q10,27 16,32 M35,17 Q41,27 34,32 M13,15 Q7,26 14,34 M37,15 Q43,27 36,34" stroke="red" fill="none"></path>
+                    </svg>
+                    <svg id="profile" width="50" height="50" ng-click="slideshow=2">
+                        <circle cx="25" cy="25" r="22" stroke="purple" fill="white"></circle>
+                        <circle cx="25" cy="20" r="5" stroke="purple" fill="white"></circle>
+                        <path d="M16,34 A6,6 90 0,1 22,28 H28 A6,6 90 0,1 34,34" stroke="purple" fill="none"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="main-body" ng-switch='slideshow' >
+                <div class="main-slider" ng-switch-when="1">
+                    <div class="slideOnLeft" ng-click="showPrev()">
+                        <svg width="15" height="30">
+                            <path d="M10,2 L2,15 L10,28" stroke="white" fill="none"></path>
+                        </svg>
+                    </div>
+                    <img ng-repeat="slide in slides" class="sliderImages" ng-show="isActive($index)" ng-src="{{slide.image}}" />
+                    <div class="slideOnRight" ng-click="showNext()" ng-keypress="keyControl(e)">
+                        <svg width="15" height="30">
+                            <path d="M4,2 L12,15 L4,28" stroke="white" fill="none"></path>
+                        </svg>
+                    </div>
+                    <div class="slideNumber">
+                        <svg width="18" height="18" ng-click="slideshow=2">
+                            <circle cx="9" cy="9" r="3" stroke="white" fill="none"></circle>
+                            <path d="M8,9 A1,1 180 1,1 10,9" stroke="white" stroke-width="0.3" fill="none"></path>
+                            <path d="M1,5 V15 H17 V5 L12,4 L12,1 H6 L6,4 L1,5" stroke="white" fill="none"></path>
+                        </svg>
+                        <p>{{index+1}}/{{slidesLength}}</p>
+                    </div>
+                    <div class="report" ng-click="report()">
+                        <svg width="10" height="20">
+                            <path d="M1,19 V1 H9 V9 H1" stroke="white" fill="none"></path>
+                        </svg>
+                    </div>
+                    <div id="presentPage" class="presentPage">
+                        <img src="img/rose.png">
+                        <h2>
+                            Все любят сюрпризы!
+                        </h2>
+                        <h3>
+                            Отправить {{sexPresent}} подарок?
+                        </h3>
+                        <button class="presentButton"  ng-click="present()">Отправить!</button>
+                    </div>
+                </div>
+                <div class="profile" ng-switch-when="2">
+                    <div class="photo">
+                        <div ng-repeat="slide in slides">
+                            <div class="one-photo">
+                                <img ng-src="{{slide.image}}"  ng-click="$parent.$parent.slideshow=1;$parent.$parent.index=$index">
+                            </div>
+                        </div>
+                        <div class="photo-number">
+                            <svg width="18" height="18" ng-click="slideshow=2">
+                                <circle cx="9" cy="9" r="3" stroke="white" fill="none"></circle>
+                                <path d="M8,9 A1,1 180 1,1 10,9" stroke="white" stroke-width="0.3" fill="none"></path>
+                                <path d="M1,5 V15 H17 V5 L12,4 L12,1 H6 L6,4 L1,5" stroke="white" fill="none"></path>
+                            </svg>
+                            <p>
+                                {{slidesLength}}
+                            </p>
+                        </div>
+                        <div class="photo-scroll-left" ng-click="photoScrollLeft()">
+                            <svg width="15" height="15">
+                                <path d="M10,2 L2,7 L10,12" stroke="white" fill="none"></path>
+                            </svg>
+                        </div>
+                        <div class="photo-scroll-right" ng-click="photoScrollRight()">
+                            <svg width="15" height="15">
+                                <path d="M4,2 L12,7 L4,12" stroke="white" fill="none"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="main-info">
+                        <h4>
+                            Образование
+                        </h4>
+                        <p>
+                            {{education}}
+                        </p>
+                        <hr>
+                        <h4>
+                            Местоположение
+                        </h4>
+                        <p>
+                            {{address}}
+                        </p>
+                        <div class="map" id="map">
+
+                            <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+                            <script type="text/javascript">
+                                var geocoder = new google.maps.Geocoder();
+                                function mapSearch () {
+                                        geocoder.geocode( { 'address': address}, function(results, status) {
+                                            if (status == google.maps.GeocoderStatus.OK) {
+                                                var latitude = results[0].geometry.location.lat();
+                                                var longitude = results[0].geometry.location.lng();
+                                                initialize(latitude,longitude);
+                                            }
+                                        });
+                                    function initialize(latitude,longitude) {
+                                        var latlng = new google.maps.LatLng(latitude,longitude);
+                                        var myOptions = {
+                                            zoom: 14,
+                                            center: latlng,
+                                            mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                            mapTypeControl: false,
+                                            disableDefaultUI: false,
+                                            draggable:true,
+                                            disableDoubleClickZoom:true
+                                        };
+                                        var map = new google.maps.Map(document.getElementById("map"),myOptions);
+                                        var marker = new google.maps.Marker({
+                                            position: latlng,
+                                            map: map
+                                        });
+                                    }
+                                }
+                            </script>
+
+                            <div class="mapSearch" id="mapSearch">
+                                <p>Посмотрите, где находится</p>
+                                <button class="mapSearchButton" onclick="mapSearch()">  Показать на карте  </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <h4>
+                            Я хочу
+                        </h4>
+                        <p>
+                            {{ambition}}
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="second-info">
+                        <h4>
+                            Рейтинг
+                        </h4>
+                        <div class="rating">
+                            <svg class="ratingImage" width="100" height="100">
+                                <linearGradient id="stripes" x1="0" y1="50%" x2="100%" y2="0">
+                                    <stop stop-color="hsl(45,100%,65%)" offset="0"></stop>
+                                    <stop stop-color="hsl(320,100%,65%)" offset="50%"></stop>
+                                    <stop stop-color="hsl(200,100%,60%)" offset="100%"></stop>
+                                </linearGradient>
+                                <path d="M30,15 A40,40 300 1,0 70,15" stroke="lightgrey" stroke-width="7" fill="none" stroke-linecap="round"></path>
+                                <g>
+                                <path d="M70,15 A40,40 300 1,1 30,15" stroke="url(#stripes)" stroke-width="7" fill="none" stroke-dasharray ={{notGap}} stroke-dashoffset="0" stroke-linecap="round"></path>
+                                </g>
+
+                            </svg>
+                            <p class="ratingResult">{{ratingResult}}</p>
+                            <p class="text">{{sexLike}} {{like}} из {{like+unlike}} человек</p>
+                        </div>
+                        <hr>
+                        <h4>
+                            Пообщайтесь с {{sexTalk}}!
+                        </h4>
+                        <div class="present">
+                            <div class="presentImage" ng-click="present()">
+
+                            </div>
+                            <p>
+                                Сделайте подарок, и вы сразу сможете общаться!
+                            </p>
+                        </div>
+                        <hr>
+                        <h4>
+                            Верификация
+                        </h4>
+                        <div class="verification">
+                            <p>
+                                {{noVerification}}
+                            </p>
+                            <div id="phoneVerification"  ng-if="phoneDisplay">
+                                <div class="phoneImage">
+
+                                </div>
+                                <div class="text">
+                                    <h4>
+                                        Телефон
+                                    </h4>
+                                    <p>
+                                        Подтвержден
+                                    </p>
+                                </div>
+                            </div>
+                            <div id="vkVerification" ng-if="vkDisplay">
+                                <div class="vkImage">
+
+                                </div>
+                                <div class="text">
+                                    <h4>
+                                        {{vkFriends}} друзей
+                                    </h4>
+                                    <p>
+                                        Подтвержден
+                                    </p>
+                                </div>
+                            </div>
+                            <div id="fbVerification" ng-if="fbDisplay">
+                                <div class="fbImage">
+
+                                </div>
+                                <div class="text">
+                                    <h4>
+                                        {{fbFriends}} друзей
+                                    </h4>
+                                    <p>
+                                        Подтвержден
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="keypad-explain">
+                <svg width="30" height="30"><rect width="30" height="30" fill="skyblue"/></svg>
+                <p>Да</p>
+                <svg width="30" height="30"><rect width="30" height="30" fill="skyblue"/></svg>
+                <p>Нет</p>
+                <svg width="30" height="30"><rect width="30" height="30" fill="skyblue"/></svg>
+                <p>СуперЛайк</p>
+                <svg width="30" height="30"><rect width="30" height="30" fill="skyblue"/></svg>
+                <svg width="30" height="30"><rect width="30" height="30" fill="skyblue"/></svg>
+                <p>Назад/Вперед</p>
+                <svg width="30" height="30"><rect width="30" height="30" fill="skyblue"/></svg>
+                <p>Следующее фото</p>
+            </div>
+        </div>
+        <div class="search">
+            Найти
+        </div>
+    </div>
+    <div class="right">
+        Столбик фотографий
+    </div>
+</div>
+</body>
+
+</html>
